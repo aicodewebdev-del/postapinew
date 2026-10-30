@@ -1,0 +1,30 @@
+body {
+  background-color: bisque;
+}
+
+#main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+}
+
+#inp {
+  width: 15rem;
+  background-color: rgb(153, 153, 237);
+  color: white;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #7c7cd6;
+  border-radius: 4px;
+}
+
+#btn {
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 8px 14px;
+  color: white;
+  background-color: rgb(4, 196, 36);
+  border: none;
+  cursor: pointer; 
+}
