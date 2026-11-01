@@ -1,61 +1,59 @@
-const input = document.getElementById('inp');
-const button = document.getElementById('btn');
-const showlist = document.getElementById('tasklist');
+const input = document.getElementById("inp");
+const button = document.getElementById("btn");
+const showlist = document.getElementById("tasklist");
 
-async function postapi() {
+async function fetchdata() {
   try {
-    const inpudata = input.value.trim();
-    if (inpudata === "") {
-      alert("Please enter any value");
+    const data = input.value.trim();
+    if (data === "") {
+      alert("Please Enter Anything");
       return;
     }
 
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: inpudata,
-        userId: 1
-      })
+        title: data,
+        userId: 1,
+      }),
     });
 
-    const data = await response.json();
+    const showdata = await response.json();
 
-    const li = document.createElement('li');
-    li.textContent = data.title + " "; 
+    const list = document.createElement("li");
+    list.textContent = `${showdata.title} `; 
 
-    const delBtn = document.createElement('button');
-    delBtn.textContent = "Delete";
+    const DelBtn = document.createElement("button");
+    DelBtn.textContent = "Delete";
 
-    delBtn.addEventListener('click', async function() {
-      await deleteItem(data.id, li);
+  
+    DelBtn.addEventListener("click", async function () {
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/posts/${showdata.id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (response.ok) {
+          list.remove();
+        } else {
+          alert("Delete failed");
+        }
+      }catch (e) {
+        console.log(e);
+      }
     });
 
-    li.appendChild(delBtn);            
-    showlist.appendChild(li);          
-
+    list.appendChild(DelBtn);
+    showlist.appendChild(list);
     input.value = "";
   } catch (e) {
     console.log(e);
   }
 }
 
-async function deleteItem(id, listElement) {
-  try {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-      method: "DELETE"
-    });
-
-    if (response.ok) {
-      listElement.remove();
-    } else {
-      alert("Cannot delete");
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-button.addEventListener('click', postapi);
+button.addEventListener("click", fetchdata);
