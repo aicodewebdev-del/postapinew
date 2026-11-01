@@ -9,11 +9,9 @@ function renderTask(task) {
   editBtn.textContent = "Edit";
   editBtn.addEventListener("click", async function () {
     const newTitle = prompt("ਨਵਾਂ ਟਾਸਕ ਲਿਖੋ:", task.title);
-       if (newTitle && newTitle.trim() !== "") {
+    if (newTitle && newTitle.trim() !== "") {
       try {
-      
         const targetId = task.id > 100 ? 1 : task.id;
-
         const response = await fetch(
           `https://jsonplaceholder.typicode.com/posts/${targetId}`,
           {
@@ -26,12 +24,12 @@ function renderTask(task) {
               title: newTitle.trim(),
               userId: 1,
             }),
-          }
+          },
         );
 
         if (response.ok) {
           const updatedData = await response.json();
-        
+
           taskText.textContent = `${newTitle.trim()} `;
           task.title = newTitle.trim();
         } else {
@@ -42,8 +40,6 @@ function renderTask(task) {
       }
     }
   });
-
- 
   const delBtn = document.createElement("button");
   delBtn.textContent = "Delete";
 
@@ -53,7 +49,7 @@ function renderTask(task) {
         `https://jsonplaceholder.typicode.com/posts/${task.id}`,
         {
           method: "DELETE",
-        }
+        },
       );
 
       if (response.ok) {
@@ -72,15 +68,12 @@ function renderTask(task) {
 
   showlist.appendChild(list);
 }
-
-
 async function loadInitialTasks() {
   try {
     const response = await fetch(
-      "https://jsonplaceholder.typicode.com/posts?_limit=5"
+      "https://jsonplaceholder.typicode.com/posts?_limit=5",
     );
     const posts = await response.json();
-
     posts.forEach((post) => {
       renderTask(post);
     });
@@ -88,8 +81,6 @@ async function loadInitialTasks() {
     console.log("Error fetching posts:", err);
   }
 }
-
-
 async function addTask() {
   try {
     const data = input.value.trim();
@@ -97,7 +88,6 @@ async function addTask() {
       alert("Please Enter Anything");
       return;
     }
-
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       headers: {
@@ -108,24 +98,17 @@ async function addTask() {
         userId: 1,
       }),
     });
-
     const newPost = await response.json();
-
     renderTask(newPost);
     input.value = "";
   } catch (err) {
     console.log("Error creating post:", err);
   }
 }
-
-
 button.addEventListener("click", addTask);
-
 input.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     addTask();
   }
 });
-
-
 loadInitialTasks();
